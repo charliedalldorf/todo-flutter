@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:todo/models/events.dart';
 
 // Demonstrates how to use autofill hints. The full list of hints is here:
 // https://github.com/flutter/engine/blob/master/lib/web_ui/lib/src/engine/text_editing/autofill_hint.dart
@@ -14,42 +15,37 @@ class Event extends StatefulWidget {
 }
 
 class _EventState extends State<Event> {
+  final Events _event = Events(0, '');
+  final List<Events> _events = [];
+
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
-        key: _formKey,
-        child: Scrollbar(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: AutofillGroup(
-              child: Column(
-                children: [
-                  ...[
-                    TextFormField(
-                      autofocus: true,
-                      textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                        labelText: 'Event Name',
-                      ),
-                      autofillHints: const [AutofillHints.givenName],
-                    ),
-                  ].expand(
-                    (widget) => [
-                      widget,
-                      const SizedBox(
-                        height: 24,
-                      )
-                    ],
-                  )
-                ],
-              ),
+          key: _formKey,
+          child: Column(children: <Widget>[
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Event Name'),
+              onSaved: (val) => setState(() => _event.eventName = val!),
             ),
-          ),
-        ),
-      ),
+            Container(
+                margin: const EdgeInsets.all(10.0),
+                child: ElevatedButton(
+                  onPressed: () => onSubmit(),
+                  child: const Text('Submit'),
+                ))
+          ])),
     );
+  }
+
+  onSubmit() async {
+    var form = _formKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      _events.add(Events(_events.length + 1, _event.eventName));
+      form.reset();
+    }
   }
 }

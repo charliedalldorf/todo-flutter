@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
                 ),
                 Tab(
                   icon: Icon(Icons.event),
-                  text: 'Event',
+                  text: 'Events',
                 ),
               ],
             ),
