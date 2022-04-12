@@ -1,33 +1,31 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:todo/models/contact.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/models/favorites.dart';
+import 'package:todo/screens/favorites.dart';
+import 'package:todo/screens/home.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
+  runApp(const TestingApp());
 }
 
-class ContactForm extends StatefulWidget {
-  const ContactForm({Key? key}) : super(key: key);
+class TestingApp extends StatelessWidget {
+  const TestingApp({Key? key}) : super(key: key);
 
   @override
-  ContactFormState createState() {
-    return ContactFormState();
-  }
-}
-
-class ContactFormState extends State<ContactForm> {
-  final _formKey = GlobalKey<FormState>();
-
-  @override
-  Widget build(BuildContext) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: <Widget>[
-          // Add TextFormFields and ElevatedButton here.
-        ],
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<Favorites>(
+      create: (context) => Favorites(),
+      child: MaterialApp(
+        title: 'Testing Sample',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        routes: {
+          HomePage.routeName: (context) => const HomePage(),
+          FavoritesPage.routeName: (context) => const FavoritesPage(),
+        },
+        initialRoute: HomePage.routeName,
       ),
     );
   }
