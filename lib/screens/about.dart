@@ -10,8 +10,6 @@ class About extends StatefulWidget {
 class _AboutState extends State<About> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: const Text("About")),
-        body: const Center(child: Text("About Page")));
+    return const Scaffold(body: Center(child: Text("About Page")));
   }
 }
