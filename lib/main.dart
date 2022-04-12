@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme:
           ThemeData(primarySwatch: Colors.purple, brightness: Brightness.dark),
       debugShowCheckedModeBanner: false,
-      home: NavBar(),
+      home: const NavBar(),
     );
   }
 }
