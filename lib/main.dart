@@ -1,31 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo/models/favorites.dart';
-import 'package:todo/screens/favorites.dart';
-import 'package:todo/screens/home.dart';
 
 void main() {
-  runApp(const TestingApp());
+  runApp(const MyApp());
 }
 
-class TestingApp extends StatelessWidget {
-  const TestingApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<Favorites>(
-      create: (context) => Favorites(),
-      child: MaterialApp(
-        title: 'Testing Sample',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MaterialApp(
+      title: 'Welcome to Flutter',
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Welcome to Flutter'),
         ),
-        routes: {
-          HomePage.routeName: (context) => const HomePage(),
-          FavoritesPage.routeName: (context) => const FavoritesPage(),
-        },
-        initialRoute: HomePage.routeName,
+        body: const Center(
+          child: Text('Hello World'),
+        ),
+        bottomNavigationBar:
+            BottomNavigationBar(items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'About'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Contacts'),
+        ]),
       ),
     );
   }
