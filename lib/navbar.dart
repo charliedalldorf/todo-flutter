@@ -11,18 +11,29 @@ class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
 
   static const List<Widget> _pages = <Widget>[
-    Icon(
-      Icons.home,
-      size: 150,
+    Center(
+      child: Icon(
+        Icons.call,
+        size: 150,
+      ),
     ),
-    Icon(
-      Icons.book,
-      size: 150,
+    Center(
+      child: Icon(
+        Icons.camera,
+        size: 150,
+      ),
     ),
-    Icon(
-      Icons.person,
-      size: 150,
-    )
+    Center(
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: TextField(
+          style: TextStyle(fontSize: 50),
+          decoration: InputDecoration(
+              labelText: 'Find contact',
+              labelStyle: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+      ),
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -31,6 +42,7 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
