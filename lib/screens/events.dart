@@ -10,7 +10,7 @@ class Event extends StatefulWidget {
 }
 
 class _EventState extends State<Event> {
-  final Events _event = Events(0, '', '', '', '', '');
+  final Events _event = Events(0, '', '', '', '', '', 0);
 
   final _formKey = GlobalKey<FormState>();
   @override
@@ -68,13 +68,8 @@ class _EventState extends State<Event> {
     var form = _formKey.currentState;
     if (form!.validate()) {
       form.save();
-      await SQLite.createEvent(
-        _event.eventName,
-        _event.venueName,
-        _event.city,
-        _event.state,
-        _event.description,
-      );
+      await SQLite.createEvent(_event.eventName, _event.venueName, _event.city,
+          _event.state, _event.description, 1);
       form.reset();
     }
   }

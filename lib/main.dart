@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo/screens/home.dart';
-import 'package:todo/screens/about.dart';
 import 'package:todo/screens/events.dart';
 import 'package:todo/screens/network.dart';
+import 'package:todo/screens/eventPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,8 +14,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {'event-details': (context) => const EventPage()},
       home: DefaultTabController(
-        length: 4,
+        length: 3,
         child: Scaffold(
           appBar: AppBar(
             bottom: const TabBar(
@@ -23,10 +24,6 @@ class MyApp extends StatelessWidget {
                 Tab(
                   icon: Icon(Icons.home),
                   text: 'Home',
-                ),
-                Tab(
-                  icon: Icon(Icons.book),
-                  text: 'About',
                 ),
                 Tab(
                   icon: Icon(Icons.event),
@@ -41,7 +38,7 @@ class MyApp extends StatelessWidget {
             title: const Text('Antelope Network'),
           ),
           body: const TabBarView(
-            children: [Home(), About(), Event(), Network()],
+            children: [Home(), Event(), Network()],
           ),
         ),
       ),

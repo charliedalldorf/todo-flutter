@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/services/sqlite.dart';
+import 'package:todo/screens/eventPage.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -20,11 +21,8 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void _deleteEvent(int id) async {
-    await SQLite.deleteEvent(id);
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Successfully deleted an Event!')));
-    _getEvents();
+  void _goToDetails(context, id) {
+    Navigator.of(context).pushNamed('event-details', arguments: id);
   }
 
   @override
@@ -43,22 +41,23 @@ class _HomeState extends State<Home> {
             : ListView.builder(
                 itemCount: _events.length,
                 itemBuilder: (context, index) => Card(
-                    color: Colors.cyan[200],
+                    color: Colors.white,
                     margin: const EdgeInsets.all(15),
+                    elevation: 2,
                     child: ListTile(
                       title: Text(_events[index]['id'].toString() +
                           '. ' +
                           _events[index]['eventName']),
                       subtitle: Text('at ' + _events[index]['venueName']),
+                      textColor: Colors.black54,
                       trailing: SizedBox(
                           width: 100,
                           child: Row(
                             children: [
-                              IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () =>
-                                    _deleteEvent(_events[index]['id']),
-                              )
+                              ElevatedButton(
+                                  child: const Text("Details"),
+                                  onPressed: () => (_goToDetails(
+                                      context, _events[index]['id'])))
                             ],
                           )),
                     ))));

@@ -2,7 +2,11 @@ class Contacts {
   int id;
   String contactName;
   String phoneNumber;
-  String shortDescription;
+  String companyName;
+  String followUpDate;
+  int isFollowedUp;
+  String notes;
 
-  Contacts(this.id, this.contactName, this.phoneNumber, this.shortDescription);
+  Contacts(this.id, this.contactName, this.phoneNumber, this.companyName,
+      this.isFollowedUp, this.followUpDate, this.notes);
 }
