@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo/screens/home.dart';
 import 'package:todo/screens/about.dart';
-import 'package:todo/screens/event.dart';
+import 'package:todo/screens/events.dart';
+import 'package:todo/screens/network.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-        length: 3,
+        length: 4,
         child: Scaffold(
           appBar: AppBar(
             bottom: const TabBar(
@@ -31,12 +32,16 @@ class MyApp extends StatelessWidget {
                   icon: Icon(Icons.event),
                   text: 'Events',
                 ),
+                Tab(
+                  icon: Icon(Icons.people),
+                  text: 'Network',
+                ),
               ],
             ),
             title: const Text('Antelope Network'),
           ),
           body: const TabBarView(
-            children: [Home(), About(), Event()],
+            children: [Home(), About(), Event(), Network()],
           ),
         ),
       ),

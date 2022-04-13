@@ -48,8 +48,8 @@ class _HomeState extends State<Home> {
                     child: ListTile(
                       title: Text(_events[index]['id'].toString() +
                           '. ' +
-                          _events[index]['name']),
-                      subtitle: Text(_events[index]['description']),
+                          _events[index]['eventName']),
+                      subtitle: Text('at ' + _events[index]['venueName']),
                       trailing: SizedBox(
                           width: 100,
                           child: Row(

@@ -5,7 +5,10 @@ class SQLite {
   static Future<void> createTable(sql.Database database) async {
     await database.execute("""CREATE TABLE events(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        name TEXT,
+        eventName TEXT,
+        venueName TEXT,
+        city TEXT,
+        state TEXT,
         description TEXT
       )
       """);
@@ -25,10 +28,17 @@ class SQLite {
   }
 
   // Create new Event
-  static Future<int> createEvent(String name, String description) async {
+  static Future<int> createEvent(String name, String venue, String city,
+      String state, String description) async {
     final db = await SQLite.db();
 
-    final data = {'name': name, 'description': description};
+    final data = {
+      'eventName': name,
+      'venueName': venue,
+      'city': city,
+      'state': state,
+      'description': description
+    };
     final id = await db.insert('events', data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
