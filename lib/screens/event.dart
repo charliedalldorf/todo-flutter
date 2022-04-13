@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:todo/models/events.dart';
+import 'package:todo/services/sqlite.dart';
 
 // Demonstrates how to use autofill hints. The full list of hints is here:
 // https://github.com/flutter/engine/blob/master/lib/web_ui/lib/src/engine/text_editing/autofill_hint.dart
@@ -15,11 +16,9 @@ class Event extends StatefulWidget {
 }
 
 class _EventState extends State<Event> {
-  final Events _event = Events(0, '');
-  final List<Events> _events = [];
+  final Events _event = Events(0, '', '');
 
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +28,10 @@ class _EventState extends State<Event> {
             TextFormField(
               decoration: const InputDecoration(labelText: 'Event Name'),
               onSaved: (val) => setState(() => _event.eventName = val!),
+            ),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Description'),
+              onSaved: (val) => setState(() => _event.description = val!),
             ),
             Container(
                 margin: const EdgeInsets.all(10.0),
@@ -44,7 +47,7 @@ class _EventState extends State<Event> {
     var form = _formKey.currentState;
     if (form!.validate()) {
       form.save();
-      _events.add(Events(_events.length + 1, _event.eventName));
+      await SQLite.createEvent(_event.eventName, _event.description);
       form.reset();
     }
   }
