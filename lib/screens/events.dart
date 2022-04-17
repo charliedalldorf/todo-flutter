@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo/models/events.dart';
 import 'package:todo/services/sqlite.dart';
 
 class Event extends StatefulWidget {
@@ -10,67 +9,63 @@ class Event extends StatefulWidget {
 }
 
 class _EventState extends State<Event> {
-  final Events _event = Events(0, '', '', '', '', '', 0);
+  List<Map<String, dynamic>> _events = [];
+  bool _isLoading = true;
 
-  final _formKey = GlobalKey<FormState>();
+  void _getEvents() async {
+    final data = await SQLite.getItems();
+    setState(() {
+      _events = data;
+      _isLoading = false;
+    });
+  }
+
+  void _goToDetails(context, id) {
+    Navigator.of(context).pushNamed('event-details', arguments: id);
+  }
+
+  void _goToCreate(context) {
+    Navigator.of(context).pushNamed('event-create');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getEvents();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Form(
-            key: _formKey,
-            child: Scrollbar(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(16),
-                    child: AutofillGroup(
-                        child: Column(
-                      children: [
-                        ...[
-                          TextFormField(
-                            decoration:
-                                const InputDecoration(labelText: 'Event Name'),
-                            onSaved: (val) =>
-                                setState(() => _event.eventName = val!),
-                          ),
-                          TextFormField(
-                            decoration:
-                                const InputDecoration(labelText: 'Venue Name'),
-                            onSaved: (val) =>
-                                setState(() => _event.venueName = val!),
-                          ),
-                          TextFormField(
-                            decoration:
-                                const InputDecoration(labelText: 'City'),
-                            onSaved: (val) =>
-                                setState(() => _event.city = val!),
-                          ),
-                          TextFormField(
-                            decoration:
-                                const InputDecoration(labelText: 'State'),
-                            onSaved: (val) =>
-                                setState(() => _event.state = val!),
-                          ),
-                          TextFormField(
-                            decoration:
-                                const InputDecoration(labelText: 'Description'),
-                            onSaved: (val) =>
-                                setState(() => _event.description = val!),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => onSubmit(),
-                            child: const Text('Submit'),
-                          )
-                        ]
-                      ],
-                    ))))));
-  }
-
-  onSubmit() async {
-    var form = _formKey.currentState;
-    if (form!.validate()) {
-      form.save();
-      await SQLite.createEvent(_event.eventName, _event.venueName, _event.city,
-          _event.state, _event.description, 1);
-      form.reset();
-    }
+        floatingActionButton: FloatingActionButton.extended(
+            onPressed: () => _goToCreate(context),
+            icon: const Icon(Icons.add),
+            label: const Text('Add Event')),
+        body: _events.isEmpty
+            ? const Center(child: Text("No Events Listed"))
+            : ListView.builder(
+                padding: const EdgeInsets.only(bottom: 70),
+                itemCount: _events.length,
+                itemBuilder: (context, index) => Card(
+                    color: Colors.white,
+                    margin: const EdgeInsets.all(15),
+                    elevation: 2,
+                    child: ListTile(
+                      title: Text(_events[index]['id'].toString() +
+                          '. ' +
+                          _events[index]['eventName']),
+                      subtitle: Text('at ' + _events[index]['venueName']),
+                      textColor: Colors.black54,
+                      trailing: SizedBox(
+                          width: 100,
+                          child: Row(
+                            children: [
+                              ElevatedButton(
+                                  child: const Text("Details"),
+                                  onPressed: () => (_goToDetails(
+                                      context, _events[index]['id'])))
+                            ],
+                          )),
+                    ))));
   }
 }

@@ -18,6 +18,8 @@ class SQLite {
         contactName TEXT,
         phoneNumber TEXT,
         companyName TEXT,
+        followUpDate TEXT,
+        isFollowedUp INTEGER,
         notes TEXT
       )""";
 
@@ -70,5 +72,34 @@ class SQLite {
     } catch (err) {
       debugPrint("Could not delete item: $err");
     }
+  }
+
+  // Get all Contacts
+  static Future<List<Map<String, dynamic>>> getContacts() async {
+    final db = await SQLite.db();
+    return db.query('contacts', orderBy: 'id');
+  }
+
+  // Create Contact
+  static Future<int> createContact(
+      String contactName,
+      String phoneNumber,
+      String companyName,
+      String followUpDate,
+      String notes,
+      int isFollowedUp) async {
+    final db = await SQLite.db();
+
+    final data = {
+      'contactName': contactName,
+      'phoneNumber': phoneNumber,
+      'companyName': companyName,
+      'followUpDate': followUpDate,
+      'notes': notes,
+      'isFollowedUp': isFollowedUp
+    };
+    final id = await db.insert('contacts', data,
+        conflictAlgorithm: sql.ConflictAlgorithm.replace);
+    return id;
   }
 }
