@@ -50,7 +50,7 @@ class _EventPageState extends State<EventPage> {
     final topContentText = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const SizedBox(height: 70.0),
+        const SizedBox(height: 55.0),
         Text(
           _event["eventName"],
           style: const TextStyle(color: Colors.white, fontSize: 36.0),
@@ -154,8 +154,8 @@ class _EventPageState extends State<EventPage> {
           ),
         ),
         Positioned(
-          left: 8.0,
-          top: 60.0,
+          left: 12.0,
+          top: 40.0,
           child: InkWell(
             onTap: () {
               Navigator.pop(context);
