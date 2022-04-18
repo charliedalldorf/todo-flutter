@@ -29,6 +29,14 @@ class _EventPageState extends State<EventPage> {
     Navigator.of(context).pushNamed('contact-create', arguments: id);
   }
 
+  AlertDialog _viewContacts() {
+    return const AlertDialog(
+      title: Text("View Contacts"),
+      content: Text("List of Contacts here"),
+      scrollable: true,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -38,17 +46,6 @@ class _EventPageState extends State<EventPage> {
   @override
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context)?.settings.arguments as int;
-
-    final location = Container(
-      padding: const EdgeInsets.all(2.0),
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.white),
-          borderRadius: BorderRadius.circular(5.0)),
-      child: Text(
-        _event["city"] + ", " + _event["state"],
-        style: const TextStyle(color: Colors.white),
-      ),
-    );
 
     final topContentText = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,22 +172,43 @@ class _EventPageState extends State<EventPage> {
     );
 
     final deleteEventButton = Container(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        width: MediaQuery.of(context).size.width,
-        child: OutlinedButton(
-          onPressed: () => _deleteEvent(id),
-          child:
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      width: MediaQuery.of(context).size.width,
+      child: OutlinedButton.icon(
+          label:
               const Text("Delete Event", style: TextStyle(color: Colors.red)),
-        ));
+          onPressed: () => _deleteEvent(id),
+          icon: const Icon(
+            Icons.delete,
+            color: Colors.red,
+          )),
+    );
+
+    final viewContactsButton = Container(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      width: MediaQuery.of(context).size.width,
+      child: OutlinedButton.icon(
+          label:
+              const Text("View Contacts", style: TextStyle(color: Colors.blue)),
+          onPressed: () => showDialog(
+              context: context,
+              builder: (context) {
+                return _viewContacts();
+              }),
+          icon: const Icon(
+            Icons.select_all,
+            color: Colors.blue,
+          )),
+    );
 
     final addContactButton = Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         width: MediaQuery.of(context).size.width,
-        child: ElevatedButton(
-          onPressed: () => _goToContactCreate(context, id),
-          child:
-              const Text("Add Contact", style: TextStyle(color: Colors.white)),
-        ));
+        child: ElevatedButton.icon(
+            label: const Text("Add Contact",
+                style: TextStyle(color: Colors.white)),
+            onPressed: () => _goToContactCreate(context, id),
+            icon: const Icon(Icons.person_add)));
     final bottomContent = Container(
       // height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -200,8 +218,9 @@ class _EventPageState extends State<EventPage> {
         child: Column(
           children: <Widget>[
             bottomContentText,
-            deleteEventButton,
-            addContactButton
+            viewContactsButton,
+            addContactButton,
+            deleteEventButton
           ],
         ),
       ),
