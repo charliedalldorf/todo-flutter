@@ -3,7 +3,6 @@ import 'package:todo/navbar.dart';
 import 'package:todo/screens/contactCreate.dart';
 import 'package:todo/screens/eventCreate.dart';
 import 'package:todo/screens/eventPage.dart';
-import 'package:todo/screens/network.dart';
 
 void main() => runApp(const MyApp());
 
