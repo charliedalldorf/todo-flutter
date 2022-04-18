@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/services/sqlite.dart';
+import 'package:todo/screens/events.dart';
+import 'package:todo/screens/network.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -12,6 +14,16 @@ class _HomeState extends State<Home> {
   List<Map<String, dynamic>> _events = [];
   List<Map<String, dynamic>> _contacts = [];
   String activeEvents = "0";
+  String contactsToFollowUp = "0";
+
+  int _currentIndex = 0;
+  final List<Widget> _tabs = [const Home(), const Event(), const Network()];
+
+  void _updateIndex(int value) {
+    setState(() {
+      _currentIndex = value;
+    });
+  }
 
   void _getEvents() async {
     final eventsData = await SQLite.getItems();
@@ -20,6 +32,8 @@ class _HomeState extends State<Home> {
       _events = eventsData;
       _contacts = contactsData;
       activeEvents = _events.where((e) => e["isActive"] == 1).length.toString();
+      contactsToFollowUp =
+          _contacts.where((c) => c["isFollowedUp"] == 1).length.toString();
     });
   }
 
@@ -95,8 +109,31 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
+      Container(
+        padding: const EdgeInsets.all(15),
+        child: Card(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                leading: const CircleAvatar(
+                    radius: 22,
+                    backgroundColor: Colors.teal,
+                    child: Icon(Icons.event, color: Colors.white)),
+                title: const Text('Contacts to Follow Up',
+                    style: TextStyle(color: Colors.blue)),
+                trailing: Text(
+                  contactsToFollowUp,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     ];
 
-    return Scaffold(body: Column(children: cards));
+    return Scaffold(
+      body: Column(children: cards),
+    );
   }
 }

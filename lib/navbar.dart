@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo/screens/about.dart';
+import 'package:todo/screens/home.dart';
+import 'package:todo/screens/events.dart';
+import 'package:todo/screens/network.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({Key? key}) : super(key: key);
@@ -8,61 +10,38 @@ class NavBar extends StatefulWidget {
   _NavBarState createState() => _NavBarState();
 }
 
-class _NavBarState extends State<NavBar> {
-  int _selectedIndex = 0;
+class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
+  int _currentIndex = 0;
+  final List<Widget> _tabs = [const Home(), const Event(), const Network()];
 
-  static const List<Widget> _pages = <Widget>[
-    Center(
-      child: Icon(
-        Icons.call,
-        size: 150,
-      ),
-    ),
-    Center(
-      child: Icon(
-        Icons.camera,
-        size: 150,
-      ),
-    ),
-    Center(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: TextField(
-          style: TextStyle(fontSize: 50),
-          decoration: InputDecoration(
-              labelText: 'Find contact',
-              labelStyle: TextStyle(fontWeight: FontWeight.bold)),
-        ),
-      ),
-    ),
-  ];
-
-  void _onItemTapped(int index) {
+  void _updateIndex(int value) {
     setState(() {
-      _selectedIndex = index;
+      _currentIndex = value;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Antelope Network"),
-      ),
-      body: IndexedStack(index: _selectedIndex, children: _pages),
+      appBar: AppBar(title: const Text("Antelope Network")),
+      body: _tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.white10,
-          elevation: 0,
-          iconSize: 30,
-          mouseCursor: SystemMouseCursors.grab,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.book), label: 'About'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person), label: 'Contacts'),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped),
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex,
+        onTap: _updateIndex,
+        elevation: 0,
+        selectedItemColor: Colors.blue,
+        unselectedFontSize: 13,
+        iconSize: 30,
+        selectedFontSize: 13,
+        selectedIconTheme: const IconThemeData(color: Colors.blue, size: 40),
+        items: const [
+          BottomNavigationBarItem(label: "Home", icon: Icon(Icons.home)),
+          BottomNavigationBarItem(label: "Events", icon: Icon(Icons.search)),
+          BottomNavigationBarItem(
+              label: "Network", icon: Icon(Icons.grid_view)),
+        ],
+      ),
     );
   }
 }
